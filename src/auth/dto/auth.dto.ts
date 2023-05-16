@@ -8,7 +8,7 @@ export class AuthDto{
 
     @IsNotEmpty()
     @IsString()
-    @Length(3, 20, {message: 'password has to be at between 3 and 20 characters'})
+    // @Length(3, 20, {message: 'password has to be at between 3 and 20 characters'})
     public password: string;
     
-}
+}   
