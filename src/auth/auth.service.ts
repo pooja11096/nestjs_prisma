@@ -6,6 +6,7 @@ import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
 import { jwtSecret } from 'src/utils/constants';
 import { Request,Response} from 'express';
+import { userInfo } from 'os';
 // import {PrismaService} from './src/prisma/prisma.service';
 
 @Injectable()
@@ -75,7 +76,13 @@ export class AuthService {
             }
             res.cookie('token', token, {});
 
-            return res.send({ message:'Login successful'})
+            if(findUser.roles === 'Admin'){
+                res.render('admin')
+            }else{
+                res.render('user')
+            }
+
+            // return res.send({ message:'Login successful'})
            
         }catch(err){
             throw err;
@@ -110,13 +117,29 @@ export class AuthService {
         return token;
     }
 
-    async googleAuth(req){
+    async googleAuth(req, res){
         if(!req.user){
             return "no user from google";
         }
 
-        return{
-            message: "user info from google"
-        }
+        // const {email, password} = dto;
+        // const findUser = await this.prisma.user.findUnique({
+        //     where:{email}
+        // })
+        // return{
+        //     message: "user info from google"
+        // }
+        // if(findUser.roles === 'User'){
+        //     res.render('user')
+        // }else{
+        //     res.render('admin')
+        // }
+        console.log("user",req.user);
+        
+        
+        res.render('admin');
+
     }
+
+    
 }

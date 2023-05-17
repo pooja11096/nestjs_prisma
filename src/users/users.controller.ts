@@ -1,5 +1,6 @@
-import { Controller, Get, Param, Req, UseGuards, Render, Res } from '@nestjs/common';
+import { Controller, Get, Param, Req, UseGuards, Render, Res, Delete, Query, Put, Body } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
+import { AuthDto, paramDto } from 'src/auth/dto/auth.dto';
 import { JwtAuthGuard } from 'src/auth/jwt.guard';
 import { UsersService } from './users.service';
 
@@ -21,7 +22,21 @@ export class UsersController {
   }
 
   @Get()
-  GetAllUsers(){
-    return this.usersService.getAllUser();
+  GetAllUsers(@Req() req, @Res() res){
+    return this.usersService.getAllUser(req, res);
   }
+
+  @Delete('/delete/:id')
+  DeleteUser(@Param() params:{id:string}, @Req() req, @Res() res){
+    return this.usersService.deleteUser(params.id, req, res);
+  }
+
+  @Put('/update')
+  updateUser(@Param() params:{id:string}, @Req() req, @Res() res){
+    try{
+        return this.usersService.updateUser(params.id, req, res)
+    }catch(err){
+        throw err;
+    }
+}
 }

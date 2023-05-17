@@ -31,15 +31,38 @@ async getUserByid(id:string, req: Request, res: Response){
     }
 }
 
-async getAllUser(){
+async getAllUser(req: Request, res: Response){
     try{
-        const users = await this.prisma.user.findMany({ select:{ id:true, email:true}});
-
+        const users = await this.prisma.user.findMany({ select:{ id:true, email:true}, where:{roles:'User'}} );
+        console.log(users);
+        
+        res.render('admin',{users});
         return {users};
     }catch(err){
         throw err
     }
 }
+
+
+async deleteUser(id:string, req: Request, res: Response){
+    try{
+        return await this.prisma.user.delete({where:{id:id}})
+    }catch(err){
+        throw err;
+    }
 }
 
-
+async updateUser(id:string, req: Request, res: Response){
+    try{
+        return await this.prisma.user.update({
+            data:{
+                email:"test@mail.com",
+            },
+            where:{id:id}
+        })
+    }
+    catch(err){
+        throw err;
+    }
+}
+}

@@ -12,3 +12,9 @@ export class AuthDto{
     public password: string;
     
 }   
+
+export class paramDto {
+
+    @IsString()
+    id?: number
+}
